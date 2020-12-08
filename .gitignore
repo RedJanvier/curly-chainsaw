@@ -1,0 +1,13 @@
+node_modules/
+package-lock.json
+dist/
+.env
+coverage/
+build/
+lib/
+.vscode/
+Passengerfile.json
+passenger.3005.log
+passenger.3005.pid
+passenger.3005.pid.lock
+combine.log
