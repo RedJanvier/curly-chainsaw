@@ -1,0 +1,9 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [version] ~ titile ~ comment ~ by date
+
+### 0.0.1
+
+- Configuration [Initial Setup] ~ configure a boiler start-up ~ Verdotte Aututu ~ July 15, 2020
