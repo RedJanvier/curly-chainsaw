@@ -14,7 +14,7 @@ describe('Request Tests', () => {
       .end((err, res) => {
         if (err) done(err);
         expect(res.body.status).toBe(HTTP_OK);
-        expect(res.body.message).toBe('Welcome to Doctor P API');
+        expect(res.body.message).toBe('Welcome to Support OnDuka API');
         done();
       });
   });

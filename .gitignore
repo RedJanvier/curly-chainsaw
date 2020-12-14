@@ -11,3 +11,4 @@ passenger.3005.log
 passenger.3005.pid
 passenger.3005.pid.lock
 combine.log
+yarn.lock
