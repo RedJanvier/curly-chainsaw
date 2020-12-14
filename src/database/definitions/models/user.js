@@ -1,5 +1,3 @@
-import EventEmitter, { EventOrg } from '../events';
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -45,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
-  
+
     User.belongsTo(models.UserType, {
       foreignKey: 'user_type',
       onDelete: 'CASCADE',
@@ -56,7 +54,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
-
   };
 
   return User;

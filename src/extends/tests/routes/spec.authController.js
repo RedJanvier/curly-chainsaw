@@ -30,8 +30,9 @@ describe('User Creation Test', () => {
       .send(userData)
       .end((err, res) => {
         if (err) done(err);
+        console.log('data', res.body);
         expect(res.body.status).toBe(HTTP_EXIST);
-        expect(res.body.message).toBe('Email already used');
+        expect(res.body.error).toBe('User already registered');
         done();
       });
   });

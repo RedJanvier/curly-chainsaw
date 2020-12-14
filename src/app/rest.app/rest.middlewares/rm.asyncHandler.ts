@@ -1,4 +1,4 @@
-import { HTTP_SERVER_ERROR } from '../../../core/constantes/httpStatusCodes';
+import { HTTP_SERVER_ERROR } from '../../../core/constants/httpStatusCodes';
 import { Request, Response, NextFunction } from 'express';
 
 const asyncHandler = (cb: any) => async (

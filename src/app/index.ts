@@ -5,7 +5,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'fs';
 
-import router from './routes';
+import router from '../app/rest.app/rest.routes';
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';

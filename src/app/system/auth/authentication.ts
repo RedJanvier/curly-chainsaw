@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import Auth from '../../../core/abstractions/auth';
-import { snakeCase } from 'snake-case';
 
 /**
  * Authentication
