@@ -22,6 +22,12 @@ class AuthRouter {
       asyncHandler(Auth.Verify.userEmail),
       asyncHandler(Controller.User.create),
     );
+    this.router.post(
+      '/auth/signup/agent',
+      Validator.User.signupAgent,
+      asyncHandler(Auth.Verify.agentUserEmail),
+      asyncHandler(Controller.UserAgent.create),
+    );
   }
 }
 

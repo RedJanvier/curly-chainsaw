@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 module.exports = (sequelize, DataTypes) => {
   const SysUser = sequelize.define(
     'SysUser',
@@ -16,9 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       position: {
         type: DataTypes.BIGINT(20),
         foreignKey: true,
+        defaultValue: 8,
       },
       employee_permissions: {
         type: DataTypes.STRING,
+        defaultValue: 'support,agent',
         foreignKey: true,
       },
       active: {
@@ -31,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {},
   );
+
+  SysUser.beforeCreate(user => {
+    return bcrypt.hash(user.password, 10).then(hash => {
+      user.password = hash;
+    });
+  });
 
   SysUser.associate = models => {
     SysUser.hasMany(models.SysContactUs, {

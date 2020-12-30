@@ -142,6 +142,35 @@ class Authentication extends Auth {
   };
 
   /**
+   * UserEmail
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} user payload
+   * @memberof Authentication
+   */
+  agentUserEmail = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    const { email } = req.body;
+
+    const emailExist = await this.Service.UserAgent.findByEmail(email);
+    if (emailExist) {
+      return this.Responses.error(
+        this.Notification.httpCode.exist(),
+        this.Notification.httpMessage.exist(),
+        res,
+      );
+    }
+
+    next();
+  };
+
+  /**
    * This method helps to verify token
    * @author Eliezer Basubi
    * @since Grest Framework
