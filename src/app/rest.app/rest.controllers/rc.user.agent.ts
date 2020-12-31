@@ -35,7 +35,7 @@ class UserAgentController {
    */
   create = async (req: Request, res: Response): Promise<Response> => {
     const { username, full_name, email, phone_number, password } = req.body;
-    // const verification_code = Math.floor(1000 + Math.random() * 9000);
+
     const userModel = {
       username,
       email,
