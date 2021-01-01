@@ -87,6 +87,52 @@ class UserValidator extends Validation {
 
     this.joiHandler(req, res, schema, next);
   };
+
+  /**
+   * Signup
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req request
+   * @param {*} res response
+   * @param {*} next cursor
+   * @memberof UserValidator
+   */
+  signupAgent = (req: Request, res: Response, next: NextFunction): void => {
+    const schema = this.joi.object().keys({
+      username: this.joi
+        .string()
+        .min(3)
+        .max(128)
+        .required(),
+      full_name: this.joi
+        .string()
+        .min(3)
+        .max(128)
+        .required(),
+      email: this.joi
+        .string()
+        .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+        .required(),
+      phone_number: this.joi
+        .string()
+        .regex(/^[a-zA-Z0-9]+$/)
+        .min(10)
+        .max(13)
+        .required(),
+      password: this.joi
+        .string()
+        .min(6)
+        .required(),
+      confirm_password: this.joi
+        .string()
+        .required()
+        .equal(this.joi.ref('password'))
+        .options({ messages: { 'any.only': 'Passwords do not match' } }),
+    });
+
+    this.joiHandler(req, res, schema, next);
+  };
 }
 
 export default UserValidator;
