@@ -11,7 +11,7 @@
     "build": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir dist --extensions \".ts,.js\" --ignore src/extends/ --source-maps inline",
-    "start": "cross-env NODE_ENV=development node dist/index.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "nodemon src/index.ts",
     "test": "jest --coverage --config=jest.config.js  --runInBand --detectOpenHandles --forceExit",
     "test:CI": "CI=true npm test",
