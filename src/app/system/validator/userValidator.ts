@@ -65,6 +65,43 @@ class UserValidator extends Validation {
   };
 
   /**
+   * Login a user by username, email or phone number
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req request
+   * @param {*} res response
+   * @param {*} next cursor
+   * @memberof UserValidator
+   */
+  loginAgent = (req: Request, res: Response, next: NextFunction): void => {
+    const schema = this.joi.object().keys({
+      login: [
+        this.joi
+          .string()
+          .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+          .required(),
+
+        this.joi
+          .string()
+          .min(3)
+          .max(128)
+          .required(),
+
+        this.joi
+          .string()
+          .regex(/^[a-zA-Z0-9]+$/)
+          .min(10)
+          .max(13)
+          .required(),
+      ],
+      password: this.joi.string().required(),
+    });
+
+    this.joiHandler(req, res, schema, next);
+  };
+
+  /**
    * Login
    * @author Eliezer Basubi
    * @since 0.001

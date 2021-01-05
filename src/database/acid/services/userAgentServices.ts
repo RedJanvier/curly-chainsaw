@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 /**
  * User database services
  */
@@ -22,6 +24,30 @@ class UserAgentServices {
   findByEmail = async (email: string): Promise<Response | null> => {
     const user = await this.db.SysUser.findOne({
       where: { email },
+    });
+    if (!user) return null;
+    return user;
+  };
+
+  /**
+   * Find by either username, email, phone_number
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {string} loginData user loginData
+   * @returns {Promise} User ! null
+   * @memberof UserAgentServices
+   */
+  findAgentInfo = async (loginData: string): Promise<Response | null> => {
+    const user = await this.db.SysUser.findOne({
+      where: {
+        [Op.or]: [
+          { email: loginData },
+          { phone_number: loginData },
+          { username: loginData },
+        ],
+        active: 1,
+      },
     });
     if (!user) return null;
     return user;
