@@ -66,8 +66,6 @@ class UserAgentController {
    * @memberof UserController
    */
   login = async (req: Request, res: Response): Promise<Response> => {
-    // const hashedPassword = this.Utils.Password.hash(req.body.password);
-
     const { login, password } = req.body;
 
     const data = await this.Service.UserAgent.findAgentInfo(login);

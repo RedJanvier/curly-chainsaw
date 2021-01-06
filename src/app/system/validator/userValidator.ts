@@ -25,7 +25,7 @@ class UserValidator extends Validation {
         .required(),
       email: this.joi
         .string()
-        .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+        .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, 'email')
         .required(),
       phonenumber: this.joi
         .string()
@@ -76,25 +76,14 @@ class UserValidator extends Validation {
    */
   loginAgent = (req: Request, res: Response, next: NextFunction): void => {
     const schema = this.joi.object().keys({
-      login: [
-        this.joi
-          .string()
-          .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
-          .required(),
+      login: this.joi
+        .string()
+        .regex(
+          /^(?:[A-Z\d][A-Z\d_-]{5,10}|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})$/i,
+          'username, email or phone number',
+        )
+        .required(),
 
-        this.joi
-          .string()
-          .min(3)
-          .max(128)
-          .required(),
-
-        this.joi
-          .string()
-          .regex(/^[a-zA-Z0-9]+$/)
-          .min(10)
-          .max(13)
-          .required(),
-      ],
       password: this.joi.string().required(),
     });
 
@@ -140,7 +129,7 @@ class UserValidator extends Validation {
       username: this.joi
         .string()
         .min(3)
-        .max(128)
+        .max(40)
         .required(),
       full_name: this.joi
         .string()
