@@ -25,7 +25,7 @@ class UserValidator extends Validation {
         .required(),
       email: this.joi
         .string()
-        .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+        .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, 'email')
         .required(),
       phonenumber: this.joi
         .string()
@@ -58,6 +58,32 @@ class UserValidator extends Validation {
         .string()
         .regex(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
         .required(),
+      password: this.joi.string().required(),
+    });
+
+    this.joiHandler(req, res, schema, next);
+  };
+
+  /**
+   * Login a user by username, email or phone number
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req request
+   * @param {*} res response
+   * @param {*} next cursor
+   * @memberof UserValidator
+   */
+  loginAgent = (req: Request, res: Response, next: NextFunction): void => {
+    const schema = this.joi.object().keys({
+      login: this.joi
+        .string()
+        .regex(
+          /^(?:[A-Z\d][A-Z\d_-]{5,10}|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})$/i,
+          'username, email or phone number',
+        )
+        .required(),
+
       password: this.joi.string().required(),
     });
 
@@ -103,7 +129,7 @@ class UserValidator extends Validation {
       username: this.joi
         .string()
         .min(3)
-        .max(128)
+        .max(40)
         .required(),
       full_name: this.joi
         .string()

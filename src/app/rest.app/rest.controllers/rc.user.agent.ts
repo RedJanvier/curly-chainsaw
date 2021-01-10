@@ -54,6 +54,56 @@ class UserAgentController {
       res,
     );
   };
+
+  /**
+   * Create ~ Login for client
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} user payload
+   * @memberof UserController
+   */
+  login = async (req: Request, res: Response): Promise<Response> => {
+    const { login, password } = req.body;
+
+    const data = await this.Service.UserAgent.findAgentInfo(login);
+    if (!data) {
+      return this.Responses.error(
+        this.Notification.httpCode.accessDenied(),
+        this.Notification.httpMessage.restrict(),
+        res,
+      );
+    }
+    const userModel = {
+      username: data.username,
+      full_name: data.full_name,
+      email: data.email,
+      phone_number: data.phone_number,
+      employee_permissions: data.employee_permissions,
+    };
+
+    const hashedPassword = data.password;
+
+    const token = this.Utils.Token.generate(userModel);
+
+    const match = this.Utils.Password.compare(password, hashedPassword);
+    if (!match) {
+      return this.Responses.error(
+        this.Notification.httpCode.accessDenied(),
+        this.Notification.httpMessage.incorrect(),
+        res,
+      );
+    } else {
+      return this.Responses.success(
+        this.Notification.httpCode.ok(),
+        this.Notification.httpMessage.ok(),
+        { token },
+        res,
+      );
+    }
+  };
 }
 
 export default UserAgentController;
