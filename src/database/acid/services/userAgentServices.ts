@@ -69,6 +69,21 @@ class UserAgentServices {
     if (!newUser) return null;
     return newUser;
   };
+
+  /**
+   * Get all the accounts
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {string} fbid facebook id
+   * @returns {*} User ! null
+   * @memberof UserProfileServices
+   */
+  findAllAccounts = async (): Promise<Response | null> => {
+    const user = await this.db.SysUser.findAll({});
+    if (!user) return null;
+    return user;
+  };
 }
 
 export default UserAgentServices;
