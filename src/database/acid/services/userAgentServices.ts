@@ -54,6 +54,23 @@ class UserAgentServices {
   };
 
   /**
+   * Find Agent by id
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {string} loginData user loginData
+   * @returns {Promise} User ! null
+   * @memberof UserAgentServices
+   */
+  findByuserId = async (id: string): Promise<Response | null> => {
+    const user = await this.db.SysUser.findOne({
+      where: { sys_user_id: id },
+    });
+    if (!user) return null;
+    return user;
+  };
+
+  /**
    * Create
    * @author Christian Matabaro
    * @since 0.001
@@ -75,12 +92,11 @@ class UserAgentServices {
    * @author Christian Matabaro
    * @since 0.001
    *
-   * @param {string} fbid facebook id
    * @returns {*} User ! null
    * @memberof UserProfileServices
    */
   findAllAccounts = async (): Promise<Response | null> => {
-    const user = await this.db.SysUser.findAll({});
+    const user = await this.db.Application.findAll();
     if (!user) return null;
     return user;
   };

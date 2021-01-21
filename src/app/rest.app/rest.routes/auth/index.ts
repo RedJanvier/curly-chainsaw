@@ -33,6 +33,11 @@ class AuthRouter {
       Validator.User.loginAgent,
       asyncHandler(Controller.UserAgent.login),
     );
+    this.router.get(
+      '/domain/dashboard/overview',
+      asyncHandler(Auth.Verify.userAgent),
+      asyncHandler(Controller.Dashboard.getAccounts),
+    );
   }
 }
 
