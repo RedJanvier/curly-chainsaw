@@ -36,31 +36,17 @@ class DashboardController {
   getAccounts = async (req: Request, res: Response): Promise<Response> => {
     const totStore: any = await this.Service.Application.findAllAccounts();
     const successStore: any = await this.Service.Application.successfulStore();
-    const totAcc: any = await this.Service.AppOwner.findAllAccounts();
+    const totAccount: any = await this.Service.AppOwner.findAllAccounts();
     const successAccount: any = await this.Service.AppOwner.successfulAccounts();
-
-    const totalAccount = totAcc.length;
-    const totalStore = totStore.length;
-    const totalSuccessfulAccount = successAccount.length;
-    const totalSuccessfulStore = successStore.length;
-
-    let db_account = [];
-    for (let acc of successAccount) {
-      if (
-        acc.AppOwnerProfile.phone_number === '' &&
-        acc.AppOwnerProfile.email === ''
-      ) {
-        db_account.push(acc);
-      }
-    }
-    const followupAccount = db_account.length;
+    const followupAccounts: any = await this.Service.AppOwner.followUpAccounts();
+    const followupStores: any = await this.Service.Application.followUpStore();
 
     let db_stores = [];
 
-    for (let store of successStore) {
+    for (let store of followupStores) {
       if (
-        store.AppDealIns.length === 0 &&
-        store.AppOwner === null &&
+        store.AppDealIns.length === 0 ||
+        store.AppOwner === null ||
         store.ProfilePlu === null
       ) {
         db_stores.push(store);
@@ -70,15 +56,15 @@ class DashboardController {
 
     const responseModel = {
       general: {
-        accounts: totalAccount,
-        store: totalStore,
+        accounts: totAccount,
+        store: totStore,
       },
       successful: {
-        accounts: totalSuccessfulAccount,
-        store: totalSuccessfulStore,
+        accounts: successAccount,
+        store: successStore,
       },
       follow_up_required: {
-        accounts: followupAccount,
+        accounts: followupAccounts,
         store: followupStore,
       },
     };
