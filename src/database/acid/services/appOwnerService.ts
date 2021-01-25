@@ -36,31 +36,11 @@ class AppOwnerServices {
    */
   successfulAccounts = async (): Promise<Response | null> => {
     const accounts = await this.db.AppOwner.findAndCountAll({
-      attributes: [
-        'app_owner_id',
-        'third_id',
-        'app_owner_legal',
-        'user_link',
-        'lang',
-        'user_type',
-        'user_src',
-        'action',
-      ],
+      attributes: ['app_owner_id', 'third_id'],
       include: [
         {
           model: this.db.AppOwnerProfile,
-          attributes: [
-            'app_owner_pro_id',
-            'app_owner',
-            'first_name',
-            'last_name',
-            'phone_number',
-            'about',
-            'avatar',
-            'main_phone',
-            'secondary_phone',
-            'country',
-          ],
+          attributes: ['app_owner_pro_id', 'app_owner'],
         },
       ],
     });
@@ -78,33 +58,14 @@ class AppOwnerServices {
    */
   followUpAccounts = async (): Promise<Response | null> => {
     const accounts = await this.db.AppOwner.findAndCountAll({
-      attributes: [
-        'app_owner_id',
-        'third_id',
-        'app_owner_legal',
-        'user_link',
-        'lang',
-        'user_type',
-        'user_src',
-        'action',
-      ],
+      attributes: ['app_owner_id', 'third_id'],
       include: [
         {
           model: this.db.AppOwnerProfile,
-          attributes: [
-            'app_owner_pro_id',
-            'app_owner',
-            'first_name',
-            'last_name',
-            'phone_number',
-            'about',
-            'avatar',
-            'main_phone',
-            'secondary_phone',
-            'country',
-          ],
+          attributes: ['app_owner_pro_id', 'app_owner'],
           where: {
-            [Op.or]: [{ phone_number: '' }, { email: '' }],
+            [Op.or]: [{ phone_number: '' }, { phone_number: null }],
+            [Op.or]: [{ email: '' }, { email: null }],
           },
         },
       ],
