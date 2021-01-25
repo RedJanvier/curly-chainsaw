@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import db from '../../../database/definitions/models';
 
 /**
  * Dashboard Controller
@@ -35,24 +36,36 @@ class DashboardController {
    */
   getAccounts = async (req: Request, res: Response): Promise<Response> => {
     const totStore: any = await this.Service.Application.findAllAccounts();
-    const successStore: any = await this.Service.Application.successfulStore();
+    const successStores: any = await this.Service.Application.successfulStore();
     const totAccount: any = await this.Service.AppOwner.findAllAccounts();
-    const successAccount: any = await this.Service.AppOwner.successfulAccounts();
+    const successAccounts: any = await this.Service.AppOwner.successfulAccounts();
     const followupAccounts: any = await this.Service.AppOwner.followUpAccounts();
-    const followupStores: any = await this.Service.Application.followUpStore();
+
+    let db_account = [];
+
+    for (let account of successAccounts) {
+      if (account.AppOwnerProfile != null) {
+        db_account.push(account);
+      }
+    }
+    const successAccount = db_account.length;
 
     let db_stores = [];
+    let db_successStores = [];
 
-    for (let store of followupStores) {
+    for (let store of successStores) {
       if (
-        store.AppDealIns.length === 0 ||
-        store.AppOwner === null ||
-        store.ProfilePlu === null
+        store.AppDealIns.length !== 0 ||
+        store.AppOwner !== null ||
+        store.ProfilePlu !== null
       ) {
         db_stores.push(store);
+      } else {
+        db_successStores.push(store);
       }
     }
     const followupStore = db_stores.length;
+    const successStore = db_successStores.length;
 
     const responseModel = {
       general: {

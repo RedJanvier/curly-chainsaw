@@ -24,7 +24,9 @@ class ApplicationServices {
    */
 
   findAllAccounts = async (): Promise<Response | null> => {
-    const accounts = await this.db.Application.findAndCountAll();
+    const accounts = await this.db.Application.findAndCountAll({
+      attributes: ['app_id'],
+    });
     if (!accounts) return null;
     return accounts.count;
   };
@@ -38,96 +40,8 @@ class ApplicationServices {
    * @memberof ApplicationServices
    */
   successfulStore = async (): Promise<Response | null> => {
-    const accounts = await this.db.Application.findAndCountAll({
-      include: [
-        {
-          model: this.db.ApplicationProfile,
-          attributes: [
-            'app_profile_id',
-            'app',
-            'title',
-            'sub_title',
-            'email',
-            'location',
-            'phone_number',
-            'common_place',
-            'avatar',
-            'website',
-            'cover',
-            'long',
-            'lat',
-          ],
-        },
-        {
-          model: this.db.ProfilePlus,
-          attributes: [
-            'profile_plus_id',
-            'app',
-            'app_third',
-            'agent_name',
-            'operate_in',
-            'country',
-            'phone_number',
-            'phone_number_2',
-            'delivery_number',
-            'return_policy',
-            'address',
-            'app_sell_in',
-            'lat',
-            'long',
-            'formatted_address',
-            'active',
-          ],
-        },
-        {
-          model: this.db.AppDealIn,
-          attributes: [
-            'app_deal_in_id',
-            'app',
-            'app_third',
-            'description',
-            'category_title',
-            'category',
-            'type_gender',
-            'active',
-          ],
-        },
-        {
-          model: this.db.AppOwner,
-          include: [
-            {
-              model: this.db.AppSubscription,
-              attributes: [
-                'app_subscription_id',
-                'payment_transaction',
-                'app_owner',
-                'app_third',
-                'package',
-                'active',
-                'expiry_date',
-                'validity',
-                'unit',
-              ],
-              where: { active: true },
-            },
-          ],
-        },
-      ],
-    });
-    if (!accounts) return null;
-    return accounts.count;
-  };
-
-  /**
-   * Get all the followup store
-   * @author Christian Matabaro
-   * @since 0.001
-   *
-   * @returns {*} Account ! null
-   * @memberof ApplicationServices
-   */
-  followUpStore = async (): Promise<Response | null> => {
     const accounts = await this.db.Application.findAll({
+      attributes: ['app_id', 'app_owner'],
       include: [
         {
           model: this.db.ApplicationProfile,
@@ -135,14 +49,15 @@ class ApplicationServices {
         },
         {
           model: this.db.ProfilePlus,
-          attributes: ['profile_plus_id', 'app', 'app_third'],
+          attributes: ['profile_plus_id', 'app'],
         },
         {
           model: this.db.AppDealIn,
-          attributes: ['app_deal_in_id', 'app', 'app_third'],
+          attributes: ['app_deal_in_id', 'app'],
         },
         {
           model: this.db.AppOwner,
+          attributes: ['app_owner_id'],
           include: [
             {
               model: this.db.AppSubscription,
@@ -150,7 +65,6 @@ class ApplicationServices {
                 'app_subscription_id',
                 'payment_transaction',
                 'app_owner',
-                'app_third',
               ],
               where: { active: true },
             },

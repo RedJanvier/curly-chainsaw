@@ -21,7 +21,9 @@ class AppOwnerServices {
    * @memberof AppOwnerServices
    */
   findAllAccounts = async (): Promise<Response | null> => {
-    const accounts = await this.db.AppOwner.findAndCountAll();
+    const accounts = await this.db.AppOwner.findAndCountAll({
+      attributes: ['app_owner_id'],
+    });
     if (!accounts) return null;
     return accounts.count;
   };
@@ -35,7 +37,7 @@ class AppOwnerServices {
    * @memberof AppOwnerServices
    */
   successfulAccounts = async (): Promise<Response | null> => {
-    const accounts = await this.db.AppOwner.findAndCountAll({
+    const accounts = await this.db.AppOwner.findAll({
       attributes: ['app_owner_id', 'third_id'],
       include: [
         {
@@ -45,7 +47,7 @@ class AppOwnerServices {
       ],
     });
     if (!accounts) return null;
-    return accounts.count;
+    return accounts;
   };
 
   /**
@@ -64,8 +66,12 @@ class AppOwnerServices {
           model: this.db.AppOwnerProfile,
           attributes: ['app_owner_pro_id', 'app_owner'],
           where: {
-            [Op.or]: [{ phone_number: '' }, { phone_number: null }],
-            [Op.or]: [{ email: '' }, { email: null }],
+            [Op.or]: [
+              { phone_number: '' },
+              { phone_number: null },
+              { email: '' },
+              { email: null },
+            ],
           },
         },
       ],
