@@ -73,6 +73,56 @@ class Authentication extends Auth {
   };
 
   /**
+   * User Agent
+   * @author Christian Matabaro
+   * @since 0.001
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} user payload
+   * @memberof Authentication
+   */
+  userAgent = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    const token: any = this.Utils.Token.extract(req, res);
+    if (!token) {
+      return this.Responses.error(
+        this.Notification.httpCode.unauthorized(),
+        this.Notification.httpMessage.unauthorized(),
+        res,
+      );
+    }
+
+    const decoded = this.Utils.Token.decode(token);
+
+    if (decoded.errors) {
+      return this.Responses.error(
+        this.Notification.httpCode.unauthorized(),
+        this.Notification.httpMessage.unauthorized(),
+        res,
+      );
+    }
+    const { sys_user_id } = decoded.payload;
+    const user = await this.Service.UserAgent.findByuserId(
+      parseInt(sys_user_id),
+    );
+
+    if (!user) {
+      return this.Responses.error(
+        this.Notification.httpCode.unauthorized(),
+        this.Notification.httpMessage.unauthorized(),
+        res,
+      );
+    }
+
+    req['currentUser'] = user;
+    next();
+  };
+
+  /**
    * Messenger User
    * @author Verdotte Aututu
    * @since 0.001

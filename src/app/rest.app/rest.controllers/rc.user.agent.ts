@@ -77,6 +77,7 @@ class UserAgentController {
       );
     }
     const userModel = {
+      sys_user_id: data.sys_user_id,
       username: data.username,
       full_name: data.full_name,
       email: data.email,

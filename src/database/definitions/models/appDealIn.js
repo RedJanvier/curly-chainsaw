@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
     });
     AppDealIn.belongsTo(models.Genre, {
-      foreignKey: 'gender_type',
+      foreignKey: 'type_gender',
       onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
     });
