@@ -55,9 +55,9 @@ class DashboardController {
 
     for (let store of successStores) {
       if (
-        store.AppDealIns.length !== 0 ||
-        store.AppOwner !== null ||
-        store.ProfilePlu !== null
+        store.AppDealIns.length === 0 ||
+        store.AppOwner === null ||
+        store.ProfilePlu === null
       ) {
         db_stores.push(store);
       } else {
@@ -67,7 +67,7 @@ class DashboardController {
     const followupStore = db_stores.length;
     const successStore = db_successStores.length;
 
-    const responseModel = {
+    const dashboard = {
       general: {
         accounts: totAccount,
         store: totStore,
@@ -85,7 +85,7 @@ class DashboardController {
       this.Notification.httpCode.ok(),
       this.Notification.httpMessage.ok(),
       {
-        responseModel,
+        dashboard,
       },
       res,
     );
