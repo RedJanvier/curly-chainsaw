@@ -32,7 +32,7 @@ class TokenUtils extends Token {
     }
 
     return isValidPayload
-      ? jwt.sign({ payload }, process.env.JWT_SECRET_KEY, expiresIn)
+      ? jwt.sign({ payload }, process.env.JWT_KEY_KEY, expiresIn)
       : null;
   };
 
@@ -47,7 +47,7 @@ class TokenUtils extends Token {
    */
   decode = (token: string = ''): any => {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET_KEY);
+      return jwt.verify(token, process.env.JWT_KEY_KEY);
     } catch (error) {
       return {
         errors: error,
